@@ -12,12 +12,8 @@
     cursor: pointer;
 }
 
-.logo:hover {
-    scale: var(--hover-scale);
-}
-
 .header {
-    padding: var(--usual-padding);
+    padding: 0 var(--usual-padding);
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;

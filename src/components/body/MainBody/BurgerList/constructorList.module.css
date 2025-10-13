@@ -1,0 +1,27 @@
+.list {
+    height: calc(100% - (1.5 * var(--offset-base-size) * 24));
+}
+
+.element {
+    max-width: var(--max-width);
+}
+
+.list_item {
+    display: flex;
+    align-items: center;
+}
+
+.drag_icon {
+    cursor: pointer;
+}
+
+.list_scroll_container {
+    display: flex;
+    gap: calc(var(--offset-base-size) * 2);
+    flex-direction: column;
+    overflow-y: auto;
+    height: calc(100% - (2 * (var(--offset-base-size) * 24)));
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--custom-scrollbar-color);
+}

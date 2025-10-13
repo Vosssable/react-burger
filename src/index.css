@@ -1,27 +1,31 @@
 :root {
-  --dark-color-light: #1C1C21;
+    --dark-color-light: #1C1C21;
 
-  --header-height: 15rem;
-  --usual-padding: 0 12rem;
-  --hover-scale: .98;
-  --max-width: -webkit-fill-available;
+    --header-height: calc(var(--offset-base-size) * 24);
+    --main-height: calc(100vh - var(--header-height));
+    --usual-padding: 12vw;
+    --main-width: calc(100vw - var(--usual-padding) * 2 - var(--offset-base-size) * 10);
+    --max-width: -webkit-fill-available;
+
+    --custom-scrollbar-color: #8585AD #2F2F37;
 }
 
-#root {
-  margin: 0;
+html {
+    margin: 0;
+    max-height: 100vh;
 }
 
 .flex-center {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .tab {
-  width: var(--max-width);
-  min-width: 0 !important;
+    width: var(--max-width);
+    min-width: 0 !important;
 }
 
 .currency-icon-medium {
-  width: 32px;
-  height: 32px;
+    width: 32px;
+    height: 32px;
 }

@@ -1,7 +1,0 @@
-.main {
-    padding: var(--usual-padding);
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: calc(var(--offset-base-size) * 10);
-}

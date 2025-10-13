@@ -1,6 +1,6 @@
-.burger_list {
-    overflow-y: auto;
-    max-height: 30rem;
+.main {
+    height: calc(var(--main-height) - (var(--offset-base-size) * 25));
+    width: initial;
 }
 
 .price {
@@ -10,13 +10,4 @@
 .footer {
     justify-content: flex-end;
     display: flex;
-}
-
-.list_item {
-    display: flex;
-    align-items: center;
-}
-
-.drag_icon {
-    cursor: pointer;
 }

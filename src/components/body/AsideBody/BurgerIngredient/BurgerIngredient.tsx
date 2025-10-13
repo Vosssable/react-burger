@@ -4,9 +4,9 @@ import {type TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
 
 function BurgerIngredient(props: {info: TBurgerIngredient, count: number}) {
     return (
-        <div className='mt-6'>
+        <div className={'mt-6 ' + styles.block}>
             <div className={styles.item}>
-                <Counter count={1} size="default" extraClass="m-1" />
+                {props.count ? (<Counter count={props.count} size="default" extraClass="m-1" />) : ''}
                 <img src={props.info.image} className='ml-4 mr-4' alt={'Фото '+ props.info.name}/>
                 <div className={'flex-center mt-1 ' + styles.price}>
                     <p className="text text_type_digits-default">

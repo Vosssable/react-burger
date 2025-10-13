@@ -1,13 +1,12 @@
 import AsideBody from "../AsideBody/AsideBody";
 import MainBody from "../MainBody/MainBody";
-import styles from './appBody.module.css';
 
 function AppBody() {
     return (
-        <div className={styles.main}>
+        <main>
             <AsideBody/>
             <MainBody/>
-        </div>
+        </main>
     )
 }
 

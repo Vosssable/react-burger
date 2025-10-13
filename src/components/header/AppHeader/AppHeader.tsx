@@ -23,19 +23,22 @@ const menuItemsRight = [
 
 function AppHeader() {
     return (
-        <nav className={styles.header}>
-            <div className={styles.left}>
-                {menuItemsLeft.map((item, index) => (
-                    <HeaderItem key={index} text={item.text} icon={item.icon}/>
-                ))}
-            </div>
-            <Logo className={styles.logo}/>
-            <div className={styles.right}>
-                {menuItemsRight.map((item, index) => (
-                    <HeaderItem key={index} text={item.text} icon={item.icon}/>
-                ))}
-            </div>
-        </nav>
+        <header>
+            <nav
+                className={styles.header}>
+                <div className={styles.left}>
+                    {menuItemsLeft.map((item, index) => (
+                        <HeaderItem key={index} text={item.text} icon={item.icon}/>
+                    ))}
+                </div>
+                <Logo className={styles.logo}/>
+                <div className={styles.right}>
+                    {menuItemsRight.map((item, index) => (
+                        <HeaderItem key={index} text={item.text} icon={item.icon}/>
+                    ))}
+                </div>
+            </nav>
+        </header>
     )
 }
 

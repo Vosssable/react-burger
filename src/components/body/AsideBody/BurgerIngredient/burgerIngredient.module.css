@@ -1,12 +1,13 @@
+.block {
+    max-width: calc(var(--main-width) / 4 - (var(--offset-base-size) * 16));
+}
+
 .item {
+    position: relative;
     display: flex;
     flex-direction: column;
     cursor: pointer;
     text-align: center;
-}
-
-.item:hover {
-    scale: .95;
 }
 
 .price {

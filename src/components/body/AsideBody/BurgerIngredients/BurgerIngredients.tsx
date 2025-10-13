@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../asideBody.module.css";
+import styles from "./burgerIngredients.module.css";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ingredientsTypes} from "../../../../helpers/lists/burgerLists";
 import items from "../../../../helpers/mocks";
@@ -25,7 +25,7 @@ function BurgerIngredients() {
                             {items
                                 .filter(ingredient => ingredient.type === item.value)
                                 .map(value => (
-                                    <BurgerIngredient count={0} info={value} key={value._id}/>
+                                    <BurgerIngredient count={Math.floor(Math.random() * 4)} info={value} key={value._id}/>
                                 ))
                             }
                         </div>

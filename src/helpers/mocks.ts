@@ -213,4 +213,8 @@ const items: TBurgerIngredient[] = [
     }
 ]
 
+export function getDefaultBun(): TBurgerIngredient {
+    return items.find(item => item._id === '60666c42cc7b410027a1a9b1') as TBurgerIngredient
+}
+
 export default items

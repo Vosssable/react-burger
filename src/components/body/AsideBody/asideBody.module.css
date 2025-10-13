@@ -1,22 +1,6 @@
-.navbar {
-    display: flex;
-    width: 100%;
-}
-
 .aside {
     display: flex;
     flex-direction: column;
-}
-
-.ingredients {
-    gap: calc(var(--offset-base-size) * 6);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.ingredients_list {
-    overflow-y: auto;
-    height: 37rem;
-    max-height: 37rem;
-    padding-right: calc(var(--offset-base-size) * 2);
+    height: inherit;
+    width: initial;
 }
