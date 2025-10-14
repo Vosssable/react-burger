@@ -1,0 +1,13 @@
+.main {
+    height: calc(var(--main-height) - (var(--offset-base-size) * 25));
+    width: initial;
+}
+
+.price {
+    align-items: center;
+}
+
+.footer {
+    justify-content: flex-end;
+    display: flex;
+}
