@@ -22,19 +22,7 @@ function ConstructorList() {
         <div className={'ml-4 mr-4 ' + styles.list}>
                 {pinBun('top')}
                 <div className={styles.list_scroll_container}>
-                    {items.map((item, index) => (
-                        <div className={styles.list_item}
-                             key={'ConstructorElement' + index}
-                        >
-                            <DragIcon type="primary" className={styles.drag_icon}/>
-                            <ConstructorElement
-                                isLocked={false}
-                                text={item.name}
-                                price={item.price}
-                                thumbnail={item.image}
-                                extraClass={'ml-2 ' + styles.element}
-                            />
-                        </div>))}
+
                 </div>
                 {pinBun('bottom')}
         </div>
