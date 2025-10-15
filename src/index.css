@@ -1,5 +1,6 @@
 :root {
     --dark-color-light: #1C1C21;
+    --color-sight: #4c4cff;
 
     --header-height: calc(var(--offset-base-size) * 24);
     --main-height: calc(100vh - var(--header-height));

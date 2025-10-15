@@ -1,0 +1,22 @@
+.container {
+    margin: 0 calc(var(--offset-base-size) * 10) calc(var(--offset-base-size) * 10) calc(var(--offset-base-size) * 10);
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail {
+    align-items: center;
+    justify-items: center;
+}
+
+.details_row {
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: calc(var(--offset-base-size) * 5);
+}
+
+.image {
+    width: calc(var(--offset-base-size) * 120);
+}

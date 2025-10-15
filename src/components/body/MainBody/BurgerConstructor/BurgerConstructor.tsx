@@ -1,8 +1,15 @@
-import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useState} from "react"
+import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
+import Modal from "../../../modals/ModalForm"
+import ConstructorList from "../BurgerList/ConstructorList"
 import styles from './burgerConstructor.module.css'
-import ConstructorList from "../BurgerList/ConstructorList";
+import MakeOrder from "../../../modals/MakeOrder/MakeOrder"
 
 function BurgerConstructor() {
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const openModal = () => setIsModalOpen(true)
+    const closeModal = () => setIsModalOpen(false)
 
     return (
         <section className={'pt-25 ' + styles.main}>
@@ -14,10 +21,18 @@ function BurgerConstructor() {
                     </p>
                     <CurrencyIcon type="primary" className='currency-icon-medium'/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium" extraClass="ml-10">
+                <Button htmlType="button" type="primary" size="medium"
+                        onClick={openModal} extraClass="ml-10">
                     Оформить заказ
                 </Button>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={null}
+            >
+                <MakeOrder offerId={'034536'}/>
+            </Modal>
         </section>
     )
 }
