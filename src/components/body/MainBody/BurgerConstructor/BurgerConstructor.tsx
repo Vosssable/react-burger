@@ -1,9 +1,9 @@
 import {useState} from "react"
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
-import Modal from "../../../modals/ModalForm"
+import Modal from "../../../modals/Modal/Modal"
 import ConstructorList from "../BurgerList/ConstructorList"
 import styles from './burgerConstructor.module.css'
-import MakeOrder from "../../../modals/MakeOrder/MakeOrder"
+import OrderDetails from "../../../modals/OrderDetails/OrderDetails"
 
 function BurgerConstructor() {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -31,7 +31,7 @@ function BurgerConstructor() {
                 onClose={closeModal}
                 title={null}
             >
-                <MakeOrder offerId={'034536'}/>
+                <OrderDetails offerId={'034536'}/>
             </Modal>
         </section>
     )

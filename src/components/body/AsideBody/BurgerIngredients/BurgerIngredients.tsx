@@ -29,7 +29,7 @@ function BurgerIngredients() {
                                 .map(value => (
                                     <BurgerIngredient count={Math.floor(Math.random() * 4)} info={value} key={value._id}/>
                                 ))
-                            : (<>Всё съели :(</>)}
+                            : (<p className='text text_type_main-default m-2'>Всё съели :(</p>)}
                         </div>
                     </div>
                 ))}

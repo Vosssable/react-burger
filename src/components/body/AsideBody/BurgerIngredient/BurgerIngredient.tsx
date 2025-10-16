@@ -2,7 +2,7 @@ import styles from './burgerIngredient.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
 import {type TBurgerIngredient} from "../../../../helpers/types/burgerTypes"
 import {useState} from "react"
-import Modal from '../../../modals/ModalForm'
+import Modal from '../../../modals/Modal/Modal'
 import IngredientDetails from "../../../modals/IngredientDetails/IngredientDetails"
 
 function BurgerIngredient(props: { info: TBurgerIngredient, count: number }) {

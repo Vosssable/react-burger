@@ -1,7 +1,7 @@
-import styles from './makeOrder.module.css'
+import styles from './orderDetails.module.css'
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components"
 
-function MakeOrder(props: { offerId: number | string }) {
+function OrderDetails(props: { offerId: number | string }) {
     return (
         <div className={styles.container + ' m-25 flex-center'}>
             <p className={'text text_type_digits-large mt-30 flex-center ' + styles.shadow}>{props.offerId}</p>
@@ -21,4 +21,4 @@ function MakeOrder(props: { offerId: number | string }) {
     )
 }
 
-export default MakeOrder
+export default OrderDetails

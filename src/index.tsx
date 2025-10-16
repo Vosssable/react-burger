@@ -10,7 +10,6 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <App/>
-        <div id="modal-form"></div>
     </React.StrictMode>
 );
 

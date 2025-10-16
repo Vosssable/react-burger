@@ -19,11 +19,22 @@ function App() {
                 } else {
                     setIngredients([])
                 }
-            } catch (error) {
-                console.error('Error fetching ingredients:', error)
-                setIngredients([])
+            } catch (error: unknown) {
+                if (error instanceof Error && 'status' in error) {
+                    if (error.status === 404) {
+                        alert('Неверный адрес!');
+                        console.error(error)
+                    } else if (error.status === 500) {
+                        alert('Ошибка на сервере, звони в яндекс!');
+                        console.error(error)
+                    } else {
+                        alert('Непредвиденная ошибка!')
+                        console.error(error)
+                    }
+                    setIngredients([])
+                }
             }
-        };
+        }
 
         fetchIngredients()
 
@@ -33,10 +44,10 @@ function App() {
     }, [])
 
     return (
-            <IngredientContext.Provider value={ingredients as []}>
-                <AppHeader/>
-                <AppBody/>
-            </IngredientContext.Provider>
+        <IngredientContext.Provider value={ingredients as []}>
+            <AppHeader/>
+            <AppBody/>
+        </IngredientContext.Provider>
     )
 }
 

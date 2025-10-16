@@ -2,14 +2,7 @@ import React, {ReactNode, useEffect} from 'react'
 import {createPortal} from 'react-dom'
 import styles from './modal.module.css'
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components"
-
-const ModalOverlay = (props: { children: ReactNode, onClose: () => void }) => {
-    return (
-        <div className={styles.overlay} onClick={props.onClose}>
-            {props.children}
-        </div>
-    )
-}
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
 
 const Modal = (props: { isOpen: boolean, onClose: () => void, title: string | null, children: ReactNode }) => {
     const {isOpen, onClose, children, title} = props
@@ -48,7 +41,7 @@ const Modal = (props: { isOpen: boolean, onClose: () => void, title: string | nu
                 {children}
             </div>
         </ModalOverlay>,
-        document.getElementById('modal-form') as HTMLElement
+        document.getElementById('modals') as HTMLElement
     )
 }
 
