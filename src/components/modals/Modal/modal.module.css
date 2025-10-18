@@ -1,0 +1,28 @@
+.modal {
+    background: var(--dark-color-light);
+    border-radius: 40px;
+    width: calc(var(--offset-base-size) * 180);
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+}
+
+.header {
+    margin: calc(var(--offset-base-size) * 10) calc(var(--offset-base-size) * 10) 0 calc(var(--offset-base-size) * 10);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close {
+    cursor: pointer;
+}
+
+.absolute {
+    margin: calc(var(--offset-base-size) * 15) calc(var(--offset-base-size) * 10) 0 0;
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    right: 0;
+}

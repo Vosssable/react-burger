@@ -1,4 +1,6 @@
-const ingredientsTypes: { name: string, value: string }[] = [
+import {TKeyValue, TKeyValueSpec} from "../types/burgerTypes";
+
+const ingredientsTypes: TKeyValue[] = [
     {
         name: 'Булки',
         value: 'bun',
@@ -13,4 +15,11 @@ const ingredientsTypes: { name: string, value: string }[] = [
     }
 ]
 
-export {ingredientsTypes}
+const ingredientsDetails: TKeyValueSpec[] = [
+    {name: 'Калории,ккал', value: 'calories'},
+    {name: 'Белки, г', value: 'proteins'},
+    {name: 'Жиры, г', value: 'fat'},
+    {name: 'Углеводы, г', value: 'carbohydrates'}
+]
+
+export {ingredientsTypes, ingredientsDetails}
