@@ -6,22 +6,12 @@
     max-width: var(--max-width);
 }
 
-.list_item {
-    display: flex;
-    align-items: center;
-}
-
-.drag_icon {
-    cursor: pointer;
-}
-
 .list_scroll_container {
     display: flex;
     gap: calc(var(--offset-base-size) * 2);
     flex-direction: column;
     overflow-y: auto;
-    max-height: calc(100% - (2 * (var(--offset-base-size) * 24)));
-
+    max-height: 45vh;
     scrollbar-width: thin;
     scrollbar-color: var(--custom-scrollbar-color);
 }

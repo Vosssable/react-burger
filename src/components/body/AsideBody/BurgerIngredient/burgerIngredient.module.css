@@ -2,6 +2,12 @@
     max-width: calc(var(--main-width) / 4 - (var(--offset-base-size) * 16));
 }
 
+.block_dragged {
+    max-width: calc(var(--main-width) / 4 - (var(--offset-base-size) * 16));
+    scale: .95;
+    opacity: .7;
+}
+
 .item {
     position: relative;
     display: flex;

@@ -1,15 +1,52 @@
 import styles from "./constructorList.module.css";
-import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useContext, useMemo} from "react";
-import {IngredientContext} from "../../../../app/App";
+import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useMemo, useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../../../store";
+import ConstructorItem from "../ConstructorItem/ConstructorItem";
+import {useDrop} from "react-dnd";
 import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
+import {moveIngredient} from "../../../../store/actions/constructor";
+
 
 function ConstructorList() {
-    const ingredients = useContext(IngredientContext) as TBurgerIngredient[]
+    const ingredients = useSelector((state: RootState) => state.burgerConstructor?.ingredients)
+    const bun = useSelector((state: RootState) => state.burgerConstructor?.bun)
+    const dispatch = useDispatch()
+    const dropRef = useRef<HTMLDivElement>(null)
 
     const defaultBun = useMemo(() => {
-        return ingredients.find(item => item._id === '643d69a5c3f7b9001cfa093c')
-    }, [ingredients])
+        return bun
+    }, [bun])
+
+    const [, dropTarget] = useDrop({
+        accept: 'ingredient',
+        drop(item: { index: number, ingredient: TBurgerIngredient }, monitor) {
+            if (!monitor.isOver({ shallow: true })) return;
+            if (!dropRef.current) return;
+
+            const dragIndex = item.index;
+            const hoverIndex = findHoverIndex(monitor);
+
+            if (dragIndex === hoverIndex) return;
+
+            dispatch(moveIngredient(dragIndex, hoverIndex));
+        }
+    })
+
+    const findHoverIndex = (monitor: any) => {
+        const clientOffset = monitor.getClientOffset();
+        if (!clientOffset) return -1
+
+        const hoveredElement = document.elementFromPoint(clientOffset.x, clientOffset.y)
+        if (!hoveredElement) return -1
+
+        const hoveredIngredient = hoveredElement.closest('[data-ingredient-index]')
+        if (!hoveredIngredient) return -1
+
+        const index = hoveredIngredient.getAttribute('data-ingredient-index')
+        return index ? parseInt(index) : -1
+    }
 
     const pinBun = (type: 'top' | 'bottom') => {
         return (
@@ -26,27 +63,17 @@ function ConstructorList() {
         )
     }
 
+    dropTarget(dropRef)
+
     return (
         <div className={'ml-4 mr-4 ' + styles.list}>
-                {pinBun('top')}
-                <div className={styles.list_scroll_container}>
-                    {ingredients.map((item, index) => (
-                        item.type !== 'bun' ?
-                        <div className={styles.list_item}
-                             key={'ConstructorElement' + index}
-                        >
-                            <DragIcon type="primary" className={styles.drag_icon}/>
-                            <ConstructorElement
-                                isLocked={false}
-                                text={item.name}
-                                price={item.price}
-                                thumbnail={item.image}
-                                extraClass={'ml-2 ' + styles.element}
-                            />
-                        </div> : null
-                    ))}
-                </div>
-                {pinBun('bottom')}
+            {pinBun('top')}
+            <div ref={dropRef} className={styles.list_scroll_container}>
+                {ingredients.map((item, index) => (
+                    <ConstructorItem item={item} key={index} index={index} />
+                ))}
+            </div>
+            {pinBun('bottom')}
         </div>
     )
 }
