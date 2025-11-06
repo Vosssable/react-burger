@@ -1,11 +1,17 @@
 import getIngredients from "./getIngredients"
 import {store} from "../../store"
-import {loadIngredientsFailed, loadIngredientsSuccess} from "../../store/actions/ingredients"
+import {
+    cleanIngredients,
+    loadIngredients,
+    loadIngredientsFailed,
+    loadIngredientsSuccess
+} from "../../store/actions/ingredients"
 import {TBurgerIngredient} from "../types/burgerTypes";
 import {addBun} from "../../store/actions/constructor";
 
 const getIngredientsController = async () => {
     try {
+        store.dispatch(loadIngredients())
         const ingredientsResponse = await getIngredients()
         if (ingredientsResponse && 'data' in ingredientsResponse) {
             store.dispatch(loadIngredientsSuccess(ingredientsResponse.data))
@@ -25,7 +31,7 @@ const getIngredientsController = async () => {
                 store.dispatch(loadIngredientsFailed('Непредвиденная ошибка!'))
                 console.error(error)
             }
-            store.dispatch(loadIngredientsSuccess([]))
+            store.dispatch(cleanIngredients())
         }
     }
 }

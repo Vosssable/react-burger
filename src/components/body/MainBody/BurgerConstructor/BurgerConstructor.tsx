@@ -9,8 +9,7 @@ import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
 import {addBun, addIngredient} from "../../../../store/actions/constructor";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState, store} from "../../../../store";
-import postOrders from "../../../../helpers/api/postOrders";
-import {cleanOrder, setOrder} from "../../../../store/actions/order";
+import postOrdersController from "../../../../helpers/api/postOrdersController";
 
 function BurgerConstructor() {
     const dispatch = useDispatch()
@@ -21,7 +20,7 @@ function BurgerConstructor() {
     const ingredients = useSelector((state: RootState) => state.burgerConstructor.ingredients || [])
 
 
-    const { totalPrice, ingredientIds } = useMemo(() => {
+    const {totalPrice, ingredientIds} = useMemo(() => {
         if (bun) {
             const totalPrice = bun.price * 2 + ingredients.reduce((sum, item) => sum + item.price, 0)
             const ingredientIds = [bun._id, ...ingredients.map(item => item._id)]
@@ -52,26 +51,8 @@ function BurgerConstructor() {
     dropTarget(dropRef)
 
     const onMakeOrderClick = () => {
-        postOrders(ingredientIds).then(response => {
-            if (response.success) {
-                dispatch(setOrder({order: response.order.number, name: response.name}))
-                openModal()
-            }
-        }).catch(error => {
-            if (error instanceof Error && 'status' in error) {
-                if (error.status === 404) {
-                    window.alert('Ошибка 404')
-                    console.error(error)
-                } else if (error.status === 500) {
-                    window.alert('Ошибка 500')
-                    console.error(error)
-                } else {
-                    window.alert('Непредвиденная ошибка')
-                    console.error(error)
-                }
-                dispatch(cleanOrder())
-                return
-            }
+        postOrdersController(ingredientIds).then(() => {
+            openModal()
         })
     }
 
