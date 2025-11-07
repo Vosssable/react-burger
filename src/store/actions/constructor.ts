@@ -13,10 +13,7 @@ export const addBun = (bun: TBurgerIngredient) => ({
 
 export const addIngredient = (ingredient: TBurgerIngredient) => ({
     type: CONSTRUCTOR_ADD_INGREDIENT,
-    payload: {
-        ...ingredient,
-        id: `${ingredient._id}`
-    },
+    payload: ingredient,
 })
 
 export const removeIngredient = (id: string, index: number) => ({

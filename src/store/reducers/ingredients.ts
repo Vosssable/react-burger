@@ -1,4 +1,4 @@
-import {TBurgerIngredient} from "../../helpers/types/burgerTypes";
+import { TBurgerIngredient } from "../../helpers/types/burgerTypes";
 import {
     CLEAN_INGREDIENTS,
     INGREDIENTS_LOAD_FAILED,
@@ -13,7 +13,7 @@ interface IngredientsState {
 }
 
 const initialState: IngredientsState = {
-    items: {ingredients: []},
+    items: { ingredients: [] },
     loading: false,
     error: null,
 }
@@ -28,6 +28,7 @@ export const ingredientsReducer = (state = initialState, action: any): Ingredien
             }
         case INGREDIENTS_LOAD_SUCCESS:
             return {
+                ...state,
                 items: action.payload,
                 loading: false,
                 error: null
@@ -40,11 +41,10 @@ export const ingredientsReducer = (state = initialState, action: any): Ingredien
             }
         case CLEAN_INGREDIENTS:
             return {
-                items: {ingredients: []},
+                items: { ingredients: [] },
                 loading: false,
                 error: null,
             }
-
         default:
             return state
     }

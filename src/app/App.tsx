@@ -4,13 +4,13 @@ import AppHeader from "../components/header/AppHeader/AppHeader"
 import AppBody from "../components/body/AppBody"
 import {Provider} from "react-redux";
 import {store} from "../store";
-import {cleanIngredients} from "../store/actions/ingredients";
-import getIngredientsController from "../helpers/api/getIngredientsController";
+import {cleanIngredients, fetchIngredients} from "../store/actions/ingredients";
+
 
 function App() {
 
     useEffect(() => {
-        getIngredientsController().then()
+        store.dispatch(fetchIngredients() as any)
 
         return () => {
             store.dispatch(cleanIngredients())
@@ -19,8 +19,8 @@ function App() {
 
     return (
         <Provider store={store}>
-                <AppHeader/>
-                <AppBody/>
+            <AppHeader/>
+            <AppBody/>
         </Provider>
     )
 }

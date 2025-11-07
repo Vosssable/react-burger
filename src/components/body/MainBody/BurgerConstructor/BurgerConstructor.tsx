@@ -4,12 +4,12 @@ import Modal from "../../../modals/Modal/Modal"
 import ConstructorList from "../BurgerList/ConstructorList"
 import styles from './burgerConstructor.module.css'
 import OrderDetails from "../../../modals/OrderDetails/OrderDetails"
-import {useDrop} from "react-dnd";
-import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
-import {addBun, addIngredient} from "../../../../store/actions/constructor";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState, store} from "../../../../store";
-import postOrdersController from "../../../../helpers/api/postOrdersController";
+import {useDrop} from "react-dnd"
+import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes"
+import {addBun, addIngredient, cleanConstructor} from "../../../../store/actions/constructor"
+import {useDispatch, useSelector} from "react-redux"
+import {RootState} from "../../../../store"
+import {createOrder} from "../../../../store/actions/order"
 
 function BurgerConstructor() {
     const dispatch = useDispatch()
@@ -18,6 +18,7 @@ function BurgerConstructor() {
 
     const bun = useSelector((state: RootState) => state.burgerConstructor.bun)
     const ingredients = useSelector((state: RootState) => state.burgerConstructor.ingredients || [])
+    const orderNumber = useSelector((state: RootState) => state.order.order)
 
 
     const {totalPrice, ingredientIds} = useMemo(() => {
@@ -51,37 +52,43 @@ function BurgerConstructor() {
     dropTarget(dropRef)
 
     const onMakeOrderClick = () => {
-        postOrdersController(ingredientIds).then(() => {
-            openModal()
-        })
+        dispatch(createOrder(ingredientIds) as any)
+        setIsModalOpen(true)
     }
 
-    const openModal = () => setIsModalOpen(true)
-    const closeModal = () => setIsModalOpen(false)
+    const closeModal = () => {
+        dispatch(cleanConstructor())
+        setIsModalOpen(false)
+    }
 
     return (
         <section className={'pt-25 ' + styles.main}>
-            <div ref={dropRef}>
-                <ConstructorList/>
-            </div>
-            <div className={'mt-10 ' + styles.footer}>
-                <div className={'flex-center pt-1 ' + styles.price}>
-                    <p className="text text_type_digits-medium">
-                        {totalPrice}
-                    </p>
-                    <CurrencyIcon type="primary" className='currency-icon-medium'/>
+            <div className={styles.main_container}>
+                <div ref={dropRef}
+                     className={ingredientIds.length !== 0 ? styles.main_container_list : styles.main_container_empty}>
+                    <ConstructorList/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium"
-                        onClick={onMakeOrderClick} extraClass="ml-10">
-                    Оформить заказ
-                </Button>
+                <div className={'mt-10 ' + styles.footer}>
+                    <div className={'flex-center pt-1 ' + styles.price}>
+                        <p className="text text_type_digits-medium">
+                            {totalPrice}
+                        </p>
+                        <CurrencyIcon type="primary" className='currency-icon-medium'/>
+                    </div>
+                    <Button htmlType="button" type="primary" size="medium"
+                            onClick={onMakeOrderClick}
+                            extraClass={"ml-10 " + (ingredientIds.length === 0 ? styles.btn_off : '')}>
+                        Оформить заказ
+                    </Button>
+                </div>
             </div>
+
             <Modal
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 title={null}
             >
-                <OrderDetails offerId={store.getState().order?.order}/>
+                <OrderDetails offerId={orderNumber}/>
             </Modal>
         </section>
     )

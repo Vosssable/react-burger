@@ -63,17 +63,29 @@ function ConstructorList() {
         )
     }
 
+    const emptyConstructor = () => {
+        return (
+            <>
+                <p className='text text_type_main-default flex-center'>Перенесите сюда булку и ингредиенты для создания заказа</p>
+            </>
+        )
+    }
+
     dropTarget(dropRef)
 
     return (
         <div className={'ml-4 mr-4 ' + styles.list}>
-            {pinBun('top')}
-            <div ref={dropRef} className={styles.list_scroll_container}>
-                {ingredients.map((item, index) => (
-                    <ConstructorItem item={item} key={index} index={index} />
-                ))}
-            </div>
-            {pinBun('bottom')}
+            { !bun && ingredients.length === 0 ? <>{emptyConstructor()}</> :
+                <>
+                    {pinBun('top')}
+                    <div ref={dropRef} className={styles.list_scroll_container}>
+                        {ingredients.map((item, index) => (
+                            <ConstructorItem item={item} key={index} index={index} />
+                        ))}
+                    </div>
+                    {pinBun('bottom')}
+                </>
+            }
         </div>
     )
 }

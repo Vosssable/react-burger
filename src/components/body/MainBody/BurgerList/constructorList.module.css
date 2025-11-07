@@ -1,5 +1,5 @@
 .list {
-    height: calc(100% - (1.5 * var(--offset-base-size) * 24));
+    height: inherit;
 }
 
 .element {
@@ -11,7 +11,7 @@
     gap: calc(var(--offset-base-size) * 2);
     flex-direction: column;
     overflow-y: auto;
-    max-height: 45vh;
+    max-height: 40vh;
     scrollbar-width: thin;
     scrollbar-color: var(--custom-scrollbar-color);
 }
