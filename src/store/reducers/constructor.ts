@@ -9,7 +9,11 @@ import {
 
 interface ConstructorState {
     bun: TBurgerIngredient | null
-    ingredients: TBurgerIngredient[]
+    ingredients: TConstructorIngredient[]
+}
+
+interface TConstructorIngredient extends TBurgerIngredient {
+    uniqueId: string
 }
 
 const initialState: ConstructorState = {
@@ -32,7 +36,7 @@ export const constructorReducer = (state = initialState, action: any): Construct
         case CONSTRUCTOR_REMOVE_INGREDIENT:
             return {
                 ...state,
-                ingredients: state.ingredients.filter((_, index) => index !== action.payload.index),
+                ingredients: state.ingredients.filter(item => item.uniqueId !== action.payload.uniqueId),
             }
         case CONSTRUCTOR_MOVE_INGREDIENT:
             const ingredients = [...state.ingredients]

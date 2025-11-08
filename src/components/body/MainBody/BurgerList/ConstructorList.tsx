@@ -80,7 +80,7 @@ function ConstructorList() {
                     {pinBun('top')}
                     <div ref={dropRef} className={styles.list_scroll_container}>
                         {ingredients.map((item, index) => (
-                            <ConstructorItem item={item} key={index} index={index} />
+                            <ConstructorItem item={item} key={item.uniqueId} index={index} />
                         ))}
                     </div>
                     {pinBun('bottom')}

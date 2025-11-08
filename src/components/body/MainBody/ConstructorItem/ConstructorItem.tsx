@@ -2,18 +2,22 @@ import styles from "./constructorItem.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
 import {useDrag} from "react-dnd";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {removeIngredient} from "../../../../store/actions/constructor";
 
-const ConstructorItem = (props: {item: TBurgerIngredient, index: number}) => {
+interface TConstructorIngredient extends TBurgerIngredient {
+    uniqueId: string;
+}
+
+const ConstructorItem = (props: {item: TConstructorIngredient, index: number}) => {
     const dragRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
 
     const [{ isDrag }, drag, previewRef] = useDrag({
         type: 'ingredient',
-        item: { index: props.index, ingredient: props.item._id },
+        item: { index: props.index, uniqueId: props.item.uniqueId },
         collect: (monitor) => ({
             isDrag: monitor.isDragging(),
         }),
@@ -21,12 +25,14 @@ const ConstructorItem = (props: {item: TBurgerIngredient, index: number}) => {
 
     drag(dragRef)
 
-    if (containerRef.current) {
-        previewRef(containerRef.current)
-    }
+    useEffect(() => {
+        if (containerRef.current) {
+            previewRef(containerRef.current)
+        }
+    }, [previewRef])
 
     function deleteItem() {
-        dispatch(removeIngredient(props.item._id, props.index))
+        dispatch(removeIngredient(props.item.uniqueId))
     }
 
     return (

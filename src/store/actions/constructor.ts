@@ -1,4 +1,5 @@
 import {TBurgerIngredient} from "../../helpers/types/burgerTypes"
+import { v4 as uuidv4 } from 'uuid'
 
 export const CONSTRUCTOR_ADD_BUN = 'CONSTRUCTOR_ADD_BUN'
 export const CONSTRUCTOR_ADD_INGREDIENT = 'CONSTRUCTOR_ADD_INGREDIENT'
@@ -13,14 +14,16 @@ export const addBun = (bun: TBurgerIngredient) => ({
 
 export const addIngredient = (ingredient: TBurgerIngredient) => ({
     type: CONSTRUCTOR_ADD_INGREDIENT,
-    payload: ingredient,
+    payload: {
+        ...ingredient,
+        uniqueId: uuidv4()
+    },
 })
 
-export const removeIngredient = (id: string, index: number) => ({
+export const removeIngredient = (uniqueId: string) => ({
     type: CONSTRUCTOR_REMOVE_INGREDIENT,
     payload: {
-        _id: id,
-        index: index
+        uniqueId: uniqueId
     },
 })
 
