@@ -1,37 +1,94 @@
-import {useState} from "react"
+import {useMemo, useRef, useState} from "react"
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
 import Modal from "../../../modals/Modal/Modal"
 import ConstructorList from "../BurgerList/ConstructorList"
 import styles from './burgerConstructor.module.css'
 import OrderDetails from "../../../modals/OrderDetails/OrderDetails"
+import {useDrop} from "react-dnd"
+import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes"
+import {addBun, addIngredient, cleanConstructor} from "../../../../store/actions/constructor"
+import {useDispatch, useSelector} from "react-redux"
+import {RootState} from "../../../../store"
+import {createOrder} from "../../../../store/actions/order"
 
 function BurgerConstructor() {
+    const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const dropRef = useRef<HTMLDivElement>(null)
 
-    const openModal = () => setIsModalOpen(true)
-    const closeModal = () => setIsModalOpen(false)
+    const bun = useSelector((state: RootState) => state.burgerConstructor.bun)
+    const ingredients = useSelector((state: RootState) => state.burgerConstructor.ingredients || [])
+    const orderNumber = useSelector((state: RootState) => state.order.order)
+
+
+    const {totalPrice, ingredientIds} = useMemo(() => {
+        if (bun) {
+            const totalPrice = bun.price * 2 + ingredients.reduce((sum, item) => sum + item.price, 0)
+            const ingredientIds = [bun._id, ...ingredients.map(item => item._id)]
+
+            return {
+                totalPrice,
+                ingredientIds
+            }
+        }
+        return {
+            totalPrice: 0,
+            ingredientIds: []
+        }
+    }, [bun, ingredients])
+
+    const [, dropTarget] = useDrop({
+        accept: "burger",
+        drop(item: TBurgerIngredient, monitor) {
+            if (item.type === 'bun') {
+                dispatch(addBun(item))
+            } else {
+                dispatch(addIngredient(item))
+            }
+            return
+        }
+    })
+
+    dropTarget(dropRef)
+
+    const onMakeOrderClick = () => {
+        dispatch(createOrder(ingredientIds) as any)
+        setIsModalOpen(true)
+    }
+
+    const closeModal = () => {
+        dispatch(cleanConstructor())
+        setIsModalOpen(false)
+    }
 
     return (
         <section className={'pt-25 ' + styles.main}>
-            <ConstructorList/>
-            <div className={'mt-10 ' + styles.footer}>
-                <div className={'flex-center pt-1 ' + styles.price}>
-                    <p className="text text_type_digits-medium">
-                        {610}
-                    </p>
-                    <CurrencyIcon type="primary" className='currency-icon-medium'/>
+            <div className={styles.main_container}>
+                <div ref={dropRef}
+                     className={ingredientIds.length !== 0 ? styles.main_container_list : styles.main_container_empty}>
+                    <ConstructorList/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium"
-                        onClick={openModal} extraClass="ml-10">
-                    Оформить заказ
-                </Button>
+                <div className={'mt-10 ' + styles.footer}>
+                    <div className={'flex-center pt-1 ' + styles.price}>
+                        <p className="text text_type_digits-medium">
+                            {totalPrice}
+                        </p>
+                        <CurrencyIcon type="primary" className='currency-icon-medium'/>
+                    </div>
+                    <Button htmlType="button" type="primary" size="medium"
+                            onClick={onMakeOrderClick}
+                            extraClass={"ml-10 " + (ingredientIds.length === 0 ? styles.btn_off : '')}>
+                        Оформить заказ
+                    </Button>
+                </div>
             </div>
+
             <Modal
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 title={null}
             >
-                <OrderDetails offerId={'034536'}/>
+                <OrderDetails offerId={orderNumber}/>
             </Modal>
         </section>
     )

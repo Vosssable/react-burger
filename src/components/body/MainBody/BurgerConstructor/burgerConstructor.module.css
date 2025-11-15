@@ -1,6 +1,21 @@
 .main {
-    height: calc(var(--main-height) - (var(--offset-base-size) * 25));
+    height: calc(var(--main-height) - (var(--offset-base-size) * 25) - var(--offset-base-size) * 25);
     width: initial;
+}
+
+.main_container {
+    height: inherit;
+}
+
+.main_container_list {
+    min-height: inherit;
+}
+
+.main_container_empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50%;
 }
 
 .price {
@@ -10,4 +25,8 @@
 .footer {
     justify-content: flex-end;
     display: flex;
+}
+
+.btn_off {
+    display: none;
 }

@@ -1,11 +1,8 @@
+import {customFetch} from "../utils/apiHelper";
+
 async function getIngredients() {
-    return fetch(`${process.env.REACT_APP_API_URL}/ingredients`, {
+    return customFetch('/ingredients', {
         method: 'GET'
-    }).then(res => {
-        if (res.ok) {
-            return res.json()
-        }
-        return Promise.reject(`Ошибка ${res.status}`)
     })
 }
 

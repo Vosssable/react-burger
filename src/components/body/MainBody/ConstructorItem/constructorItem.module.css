@@ -1,0 +1,17 @@
+.element {
+    max-width: var(--max-width);
+}
+
+.list_item_draggable,
+.list_item {
+    display: flex;
+    align-items: center;
+}
+
+.drag_icon {
+    cursor: pointer;
+}
+
+.list_item_draggable {
+    opacity: .7;
+}
