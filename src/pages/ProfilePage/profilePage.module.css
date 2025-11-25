@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    gap: calc(var(--offset-base-size)*15);
+    padding: 0 var(--usual-padding);;
+    margin-top: calc(var(--offset-base-size) * 25);
+    height: 100%;
+}
+
+.sidebar {
+    width: calc(var(--offset-base-size) * 100);
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.navLink {
+    display: block;
+    padding: calc(var(--offset-base-size)*4) 0;
+    text-decoration: none;
+}
+
+.active {
+    color: var(--color-active)
+}

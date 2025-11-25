@@ -1,5 +1,6 @@
 import {useMemo, useRef, useState} from "react"
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components"
+import {useNavigate} from "react-router-dom"
 import Modal from "../../../modals/Modal/Modal"
 import ConstructorList from "../BurgerList/ConstructorList"
 import styles from './burgerConstructor.module.css'
@@ -13,12 +14,15 @@ import {createOrder} from "../../../../store/actions/order"
 
 function BurgerConstructor() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const dropRef = useRef<HTMLDivElement>(null)
 
     const bun = useSelector((state: RootState) => state.burgerConstructor.bun)
     const ingredients = useSelector((state: RootState) => state.burgerConstructor.ingredients || [])
     const orderNumber = useSelector((state: RootState) => state.order.order)
+    const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated)
+    const accessToken = useSelector((state: RootState) => state.user.accessToken)
 
 
     const {totalPrice, ingredientIds} = useMemo(() => {
@@ -52,7 +56,11 @@ function BurgerConstructor() {
     dropTarget(dropRef)
 
     const onMakeOrderClick = () => {
-        dispatch(createOrder(ingredientIds) as any)
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: { pathname: '/' } } })
+            return
+        }
+        dispatch(createOrder(ingredientIds, accessToken) as any)
         setIsModalOpen(true)
     }
 

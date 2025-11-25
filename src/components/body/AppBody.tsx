@@ -5,7 +5,6 @@ import BurgerConstructor from "./MainBody/BurgerConstructor/BurgerConstructor";
 
 function AppBody() {
 
-
     return (
         <main>
             <DndProvider backend={HTML5Backend}>
