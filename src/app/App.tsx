@@ -6,6 +6,7 @@ import {Provider} from "react-redux"
 import {store} from "../store"
 import {cleanIngredients, fetchIngredients} from "../store/actions/ingredients"
 import HomePage from "../pages/HomePage"
+import FeedPage from "../pages/FeedPage"
 import LoginPage from "../pages/AuthPages/LoginPage"
 import RegisterPage from "../pages/AuthPages/RegisterPage"
 import ForgotPasswordPage from "../pages/AuthPages/ForgotPasswordPage"
@@ -40,6 +41,7 @@ function AppContent() {
             <AppHeader/>
             <Routes location={background || location}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/feed" element={<FeedPage />} />
                 <Route path="/login" element={<ProtectedRoute requireAuth={false}><LoginPage /></ProtectedRoute>} />
                 <Route path="/register" element={<ProtectedRoute requireAuth={false}><RegisterPage /></ProtectedRoute>} />
                 <Route path="/forgot-password" element={<ProtectedRoute requireAuth={false}><ForgotPasswordPage /></ProtectedRoute>} />
