@@ -1,11 +1,17 @@
 import {customFetch} from "../utils/apiHelper";
 
-async function postOrders(ingredients: string[]) {
+async function postOrders(ingredients: string[], accessToken?: string | null) {
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+    };
+
+    if (accessToken) {
+        headers['Authorization'] = accessToken;
+    }
+
     return customFetch('/orders', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers,
         body: JSON.stringify({
             ingredients: ingredients
         })

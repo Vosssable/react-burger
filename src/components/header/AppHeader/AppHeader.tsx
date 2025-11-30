@@ -1,45 +1,64 @@
-import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import HeaderItem from "../HeaderItem/HeaderItem";
-import React from "react";
-import styles from './appHeader.module.css';
-
-const menuItemsLeft = [
-    {
-        icon: <BurgerIcon type="primary"/>,
-        text: 'Конструктор'
-    },
-    {
-        icon: <ListIcon type="secondary"/>,
-        text: 'Лента заказов'
-    }
-]
-
-const menuItemsRight = [
-    {
-        icon: <ProfileIcon type="secondary"/>,
-        text: 'Личный кабинет'
-    }
-]
+import {
+  BurgerIcon,
+  ListIcon,
+  Logo,
+  ProfileIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components"
+import HeaderItem from "../HeaderItem/HeaderItem"
+import { Link, useLocation } from "react-router-dom"
+import styles from "./appHeader.module.css"
 
 function AppHeader() {
-    return (
-        <header>
-            <nav
-                className={styles.header}>
-                <div className={styles.left}>
-                    {menuItemsLeft.map((item, index) => (
-                        <HeaderItem key={index} text={item.text} icon={item.icon}/>
-                    ))}
-                </div>
-                <Logo className={styles.logo}/>
-                <div className={styles.right}>
-                    {menuItemsRight.map((item, index) => (
-                        <HeaderItem key={index} text={item.text} icon={item.icon}/>
-                    ))}
-                </div>
-            </nav>
-        </header>
-    )
+  const location = useLocation()
+  const isConstructorActive = location.pathname === "/"
+  const isFeedActive = location.pathname === "/feed"
+  const isProfileActive = location.pathname.startsWith("/profile")
+
+  const menuItemsLeft = [
+    {
+      icon: <BurgerIcon type={isConstructorActive ? "primary" : "secondary"} />,
+      text: "Конструктор",
+      to: "/",
+    },
+    {
+      icon: <ListIcon type={isFeedActive ? "primary" : "secondary"} />,
+      text: "Лента заказов",
+      to: "/feed",
+    },
+  ]
+
+  const menuItemsRight = [
+    {
+      icon: <ProfileIcon type={isProfileActive ? "primary" : "secondary"} />,
+      text: "Личный кабинет",
+      to: "/profile",
+    },
+  ]
+
+  return (
+    <header>
+      <nav className={styles.header}>
+        <div className={styles.left}>
+          {menuItemsLeft.map((item, index) => (
+            <HeaderItem key={index} text={item.text} icon={item.icon} to={item.to} />
+          ))}
+        </div>
+        <Link to="/">
+          <Logo className={styles.logo} />
+        </Link>
+        <div className={styles.right}>
+          {menuItemsRight.map((item, index) => (
+            <HeaderItem
+              key={index}
+              text={item.text}
+              icon={item.icon}
+              to={item.to}
+            />
+          ))}
+        </div>
+      </nav>
+    </header>
+  )
 }
 
 export default AppHeader

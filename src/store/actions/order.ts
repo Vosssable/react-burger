@@ -1,4 +1,4 @@
-import postOrders from "../../helpers/api/postOrders";
+import postOrders from "../../helpers/api/postOrders"
 
 export const LOAD_ORDER_SUCCESS = 'LOAD_ORDER_SUCCESS'
 export const LOAD_ORDER_FAILED = 'LOAD_ORDER_FAILED'
@@ -23,11 +23,13 @@ export const cleanOrder = () => ({
     type: ORDER_CLEAN
 })
 
-export const createOrder = (ingredientIds: string[]) => {
-    return async (dispatch: any) => {
+export const createOrder = (ingredientIds: string[], accessToken?: string | null) => {
+    return async (dispatch: any, getState: any) => {
         try {
             dispatch(loadOrderRequest())
-            const response = await postOrders(ingredientIds)
+            const state = getState()
+            const token = accessToken || state.user?.accessToken
+            const response = await postOrders(ingredientIds, token)
 
             if (response.success) {
                 dispatch(loadOrderSuccess({

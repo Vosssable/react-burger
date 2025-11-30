@@ -1,0 +1,20 @@
+.page {
+    justify-content: center;
+}
+
+.form {
+  max-width: 480px;
+  width: 100%;
+}
+
+.page,
+.links_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link_to {
+    color: var(--color-sight);
+    text-decoration: none;
+}

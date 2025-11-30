@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./asideBody.module.css"
 import BurgerIngredients from "./BurgerIngredients/BurgerIngredients";
 
