@@ -38,12 +38,13 @@ export const fetchIngredients = () => {
             } else {
                 dispatch(loadIngredientsSuccess([]))
             }
-        } catch (error: any) {
-            if (error && 'status' in error) {
-                if (error.status === 404) {
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'status' in error) {
+                const statusError = error as { status: number };
+                if (statusError.status === 404) {
                     dispatch(loadIngredientsFailed('Неверный адрес!'))
                     console.error(error)
-                } else if (error.status === 500) {
+                } else if (statusError.status === 500) {
                     dispatch(loadIngredientsFailed('Ошибка на сервере, звони в яндекс!'))
                     console.error(error)
                 } else {

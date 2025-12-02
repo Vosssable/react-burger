@@ -4,7 +4,7 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../../store"
 import styles from "./authPages.module.css"
 import { register } from "../../store/actions/user"
 
@@ -16,7 +16,7 @@ function RegisterPage() {
     "password" as "password" | "text"
   )
   const [error, setError] = useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: FormEvent) => {
@@ -24,9 +24,9 @@ function RegisterPage() {
     setError(false)
 
     try {
-      await dispatch(register({ name, email, password }) as any)
+      await dispatch(register({ name, email, password }))
       navigate("/", { replace: true })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Ошибка", err)
       setError(true)
     }

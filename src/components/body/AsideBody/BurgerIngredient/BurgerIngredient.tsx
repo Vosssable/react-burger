@@ -3,17 +3,16 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {type TBurgerIngredient} from "../../../../helpers/types/burgerTypes"
 import React, {useRef} from "react"
 import {useNavigate, useLocation} from "react-router-dom"
-import {RootState, store} from "../../../../store"
+import {store, useAppSelector} from "../../../../store"
 import {setCurrentIngredient} from "../../../../store/actions/currentIngredient"
 import {useDrag} from "react-dnd"
-import {useSelector} from "react-redux"
 
 function BurgerIngredient(props: { info: TBurgerIngredient }) {
     const navigate = useNavigate()
     const location = useLocation()
     const dragRef = useRef<HTMLDivElement>(null)
 
-    const count = useSelector((state: RootState) => {
+    const count = useAppSelector((state) => {
         if (props.info.type === 'bun') {
             const bun = state.burgerConstructor?.bun
             return bun && bun._id === props.info._id ? 2 : 0

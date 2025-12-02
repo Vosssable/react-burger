@@ -4,6 +4,10 @@ import {
     CURRENT_INGREDIENT_SET
 } from "../actions/currentIngredient";
 
+type CurrentIngredientAction =
+    | { type: typeof CURRENT_INGREDIENT_SET; payload: TBurgerIngredient }
+    | { type: typeof CURRENT_INGREDIENT_CLEAN }
+
 interface CurrentIngredientState {
     info: TBurgerIngredient | null
 }
@@ -12,7 +16,7 @@ const initialState: CurrentIngredientState = {
     info: null,
 }
 
-export const currentIngredientReducer = (state = initialState, action: any): CurrentIngredientState => {
+export const currentIngredientReducer = (state = initialState, action: CurrentIngredientAction): CurrentIngredientState => {
     switch (action.type) {
         case CURRENT_INGREDIENT_SET:
             return {

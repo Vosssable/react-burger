@@ -4,7 +4,7 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../../store"
 import { login } from "../../store/actions/user"
 import styles from "./authPages.module.css"
 
@@ -15,20 +15,26 @@ function LoginPage() {
     "password" as "password" | "text"
   )
   const [error, setError] = useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const from = (location.state as any)?.from?.pathname || "/"
+  interface LocationState {
+    from?: {
+      pathname: string
+    }
+  }
+
+  const from = (location.state as LocationState)?.from?.pathname || "/"
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError(false)
 
     try {
-      await dispatch(login({ email, password }) as any)
+      await dispatch(login({ email, password }))
       navigate(from, { replace: true })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log(err)
       setError(true)
     }

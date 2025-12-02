@@ -1,19 +1,15 @@
 import styles from "./constructorItem.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
 import {useDrag} from "react-dnd";
 import {useEffect, useRef} from "react";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../../../store";
 import {removeIngredient} from "../../../../store/actions/constructor";
-
-interface TConstructorIngredient extends TBurgerIngredient {
-    uniqueId: string;
-}
+import {TConstructorIngredient} from "../../../../store/reducers/constructor";
 
 const ConstructorItem = (props: {item: TConstructorIngredient, index: number}) => {
     const dragRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [{ isDrag }, drag, previewRef] = useDrag({
         type: 'ingredient',

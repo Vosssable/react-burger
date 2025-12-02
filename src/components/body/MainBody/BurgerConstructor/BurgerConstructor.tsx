@@ -8,21 +8,20 @@ import OrderDetails from "../../../modals/OrderDetails/OrderDetails"
 import {useDrop} from "react-dnd"
 import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes"
 import {addBun, addIngredient, cleanConstructor} from "../../../../store/actions/constructor"
-import {useDispatch, useSelector} from "react-redux"
-import {RootState} from "../../../../store"
+import {useAppDispatch, useAppSelector} from "../../../../store"
 import {createOrder} from "../../../../store/actions/order"
 
 function BurgerConstructor() {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const dropRef = useRef<HTMLDivElement>(null)
 
-    const bun = useSelector((state: RootState) => state.burgerConstructor.bun)
-    const ingredients = useSelector((state: RootState) => state.burgerConstructor.ingredients || [])
-    const orderNumber = useSelector((state: RootState) => state.order.order)
-    const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated)
-    const accessToken = useSelector((state: RootState) => state.user.accessToken)
+    const bun = useAppSelector((state) => state.burgerConstructor.bun)
+    const ingredients = useAppSelector((state) => state.burgerConstructor.ingredients || [])
+    const orderNumber = useAppSelector((state) => state.order.order)
+    const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated)
+    const accessToken = useAppSelector((state) => state.user.accessToken)
 
 
     const {totalPrice, ingredientIds} = useMemo(() => {
@@ -60,7 +59,7 @@ function BurgerConstructor() {
             navigate('/login', { state: { from: { pathname: '/' } } })
             return
         }
-        dispatch(createOrder(ingredientIds, accessToken) as any)
+        dispatch(createOrder(ingredientIds, accessToken))
         setIsModalOpen(true)
     }
 

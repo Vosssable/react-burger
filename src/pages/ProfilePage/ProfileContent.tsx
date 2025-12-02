@@ -1,15 +1,14 @@
 import { useState, useEffect, FormEvent } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components"
-import { RootState } from "../../store"
+import { useAppSelector, useAppDispatch } from "../../store"
 import { updateUser, getUser } from "../../store/actions/user"
 
 function ProfileContent() {
-  const dispatch = useDispatch()
-  const { user, loading } = useSelector((state: RootState) => state.user)
+  const dispatch = useAppDispatch()
+  const { user, loading } = useAppSelector((state) => state.user)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -19,7 +18,7 @@ function ProfileContent() {
 
   useEffect(() => {
     if (!user) {
-      dispatch(getUser() as any)
+      dispatch(getUser())
     } else {
       setName(user.name)
       setEmail(user.email)
@@ -42,18 +41,18 @@ function ProfileContent() {
     setError(false)
 
     try {
-      const updateData: any = {}
+      const updateData: { name?: string; email?: string; password?: string } = {}
       if (name !== user?.name) updateData.name = name
       if (email !== user?.email) updateData.email = email
       if (password) updateData.password = password
 
       if (Object.keys(updateData).length > 0) {
-        await dispatch(updateUser(updateData) as any)
+        await dispatch(updateUser(updateData))
         setPassword("")
         setIsEditing(false)
         setError(false)
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Ошибка: ", err)
       setError(true)
     } finally {

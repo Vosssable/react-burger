@@ -19,14 +19,13 @@ import NotFoundPage from "../pages/ErrorPages/NotFoundPage"
 import ProtectedRoute from "../components/ProtectedRoute"
 import Modal from "../components/modals/Modal/Modal"
 import IngredientDetails from "../components/modals/IngredientDetails/IngredientDetails"
-import { useSelector } from "react-redux"
-import { RootState } from "../store"
+import { useAppSelector } from "../store"
 
 
 function AppContent() {
     const location = useLocation()
     const navigate = useNavigate()
-    const ingredients = useSelector((state: RootState) => state.ingredients.items.ingredients)
+    const ingredients = useAppSelector((state) => state.ingredients.items.ingredients)
     
     const background = location.state?.background
     const ingredientId = location.pathname.match(/\/ingredients\/(.+)/)?.[1]
@@ -72,7 +71,7 @@ function AppContent() {
 
 function App() {
     useEffect(() => {
-        store.dispatch(fetchIngredients() as any)
+        store.dispatch(fetchIngredients())
 
         return () => {
             store.dispatch(cleanIngredients())

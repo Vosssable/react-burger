@@ -7,13 +7,20 @@ import {
     CONSTRUCTOR_CLEAN
 } from '../actions/constructor'
 
+export interface TConstructorIngredient extends TBurgerIngredient {
+    uniqueId: string
+}
+
+type ConstructorAction =
+    | { type: typeof CONSTRUCTOR_ADD_BUN; payload: TBurgerIngredient }
+    | { type: typeof CONSTRUCTOR_ADD_INGREDIENT; payload: TConstructorIngredient }
+    | { type: typeof CONSTRUCTOR_REMOVE_INGREDIENT; payload: { uniqueId: string } }
+    | { type: typeof CONSTRUCTOR_MOVE_INGREDIENT; payload: { fromIndex: number; toIndex: number } }
+    | { type: typeof CONSTRUCTOR_CLEAN }
+
 interface ConstructorState {
     bun: TBurgerIngredient | null
     ingredients: TConstructorIngredient[]
-}
-
-interface TConstructorIngredient extends TBurgerIngredient {
-    uniqueId: string
 }
 
 const initialState: ConstructorState = {
@@ -21,7 +28,7 @@ const initialState: ConstructorState = {
     ingredients: [],
 }
 
-export const constructorReducer = (state = initialState, action: any): ConstructorState => {
+export const constructorReducer = (state = initialState, action: ConstructorAction): ConstructorState => {
     switch (action.type) {
         case CONSTRUCTOR_ADD_BUN:
             return {

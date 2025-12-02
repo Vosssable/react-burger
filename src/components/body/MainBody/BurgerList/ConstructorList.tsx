@@ -1,18 +1,17 @@
 import styles from "./constructorList.module.css";
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useMemo, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../../store";
+import {useAppDispatch, useAppSelector} from "../../../../store";
 import ConstructorItem from "../ConstructorItem/ConstructorItem";
-import {useDrop} from "react-dnd";
+import {useDrop, DropTargetMonitor} from "react-dnd";
 import {TBurgerIngredient} from "../../../../helpers/types/burgerTypes";
 import {moveIngredient} from "../../../../store/actions/constructor";
 
 
 function ConstructorList() {
-    const ingredients = useSelector((state: RootState) => state.burgerConstructor?.ingredients)
-    const bun = useSelector((state: RootState) => state.burgerConstructor?.bun)
-    const dispatch = useDispatch()
+    const ingredients = useAppSelector((state) => state.burgerConstructor?.ingredients)
+    const bun = useAppSelector((state) => state.burgerConstructor?.bun)
+    const dispatch = useAppDispatch()
     const dropRef = useRef<HTMLDivElement>(null)
 
     const defaultBun = useMemo(() => {
@@ -34,7 +33,7 @@ function ConstructorList() {
         }
     })
 
-    const findHoverIndex = (monitor: any) => {
+    const findHoverIndex = (monitor: DropTargetMonitor) => {
         const clientOffset = monitor.getClientOffset();
         if (!clientOffset) return -1
 

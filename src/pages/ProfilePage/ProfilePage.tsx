@@ -1,13 +1,13 @@
 import { Outlet, NavLink } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../../store"
 import { logout } from "../../store/actions/user"
 import styles from "./profilePage.module.css"
 
 function ProfilePage() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleLogout = async () => {
-    await dispatch(logout() as any)
+    await dispatch(logout())
   }
 
   return (

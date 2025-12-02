@@ -1,4 +1,6 @@
 import postOrders from "../../helpers/api/postOrders"
+import { Dispatch } from "redux"
+import { RootState } from "../index"
 
 export const LOAD_ORDER_SUCCESS = 'LOAD_ORDER_SUCCESS'
 export const LOAD_ORDER_FAILED = 'LOAD_ORDER_FAILED'
@@ -24,7 +26,7 @@ export const cleanOrder = () => ({
 })
 
 export const createOrder = (ingredientIds: string[], accessToken?: string | null) => {
-    return async (dispatch: any, getState: any) => {
+    return async (dispatch: Dispatch, getState: () => RootState) => {
         try {
             dispatch(loadOrderRequest())
             const state = getState()
@@ -42,8 +44,8 @@ export const createOrder = (ingredientIds: string[], accessToken?: string | null
                     order: 0
                 }))
             }
-        } catch (error: any) {
-            if (error && 'status' in error) {
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'status' in error) {
                 if (error.status === 404) {
                     dispatch(loadOrderFailed('Неверный адрес!'))
                     console.error(error)

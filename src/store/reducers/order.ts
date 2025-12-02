@@ -1,5 +1,11 @@
 import {LOAD_ORDER_SUCCESS, LOAD_ORDER_REQUEST, LOAD_ORDER_FAILED, ORDER_CLEAN} from "../actions/order";
 
+type OrderAction =
+    | { type: typeof LOAD_ORDER_REQUEST }
+    | { type: typeof LOAD_ORDER_SUCCESS; payload: { order: number; name: string } }
+    | { type: typeof LOAD_ORDER_FAILED; payload: string }
+    | { type: typeof ORDER_CLEAN }
+
 interface OrderState {
     order: number
     name: string,
@@ -14,7 +20,7 @@ const initialState: OrderState = {
     error: null,
 }
 
-export const orderReducer = (state = initialState, action: any): OrderState => {
+export const orderReducer = (state = initialState, action: OrderAction): OrderState => {
     switch (action.type) {
         case LOAD_ORDER_REQUEST:
             return {
