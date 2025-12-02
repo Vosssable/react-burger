@@ -1,3 +1,5 @@
+import { API_URL } from './constants'
+
 function checkResponse(res: Response) {
     if (res.ok) {
         return res.json()
@@ -6,6 +8,6 @@ function checkResponse(res: Response) {
 }
 
 export async function customFetch(url: string, options: RequestInit) {
-    const res = await fetch(`${process.env.REACT_APP_API_URL + url}`, options)
+    const res = await fetch(`${API_URL}${url}`, options)
     return checkResponse(res)
 }

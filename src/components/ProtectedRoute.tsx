@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Navigate, useLocation } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { RootState } from "../store"
+import { useAppSelector, useAppDispatch } from "../store"
 import { getUser } from "../store/actions/user"
 import { getRefreshToken } from "../helpers/utils/tokenHelper"
 
@@ -17,9 +16,9 @@ function ProtectedRoute({
   redirectTo = "/login",
 }: ProtectedRouteProps) {
   const location = useLocation()
-  const dispatch = useDispatch()
-  const { isAuthenticated, user, loading } = useSelector(
-    (state: RootState) => state.user
+  const dispatch = useAppDispatch()
+  const { isAuthenticated, user, loading } = useAppSelector(
+    (state) => state.user
   )
   const [isChecking, setIsChecking] = useState(true)
 
@@ -29,7 +28,7 @@ function ProtectedRoute({
         const refreshToken = getRefreshToken()
         if (refreshToken && !isAuthenticated && !user) {
           try {
-            await dispatch(getUser() as any)
+            await dispatch(getUser())
           } catch (error) {
             console.error("Ошибка", error)
           }

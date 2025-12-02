@@ -19,6 +19,7 @@ import {
     USER_REFRESH_TOKEN_FAILED,
     USER_CLEAR,
 } from "../actions/user";
+import type { UserAction } from "../types/actions";
 
 interface UserState {
     user: {
@@ -41,7 +42,7 @@ const initialState: UserState = {
     isAuthenticated: false,
 };
 
-export const userReducer = (state = initialState, action: any): UserState => {
+export const userReducer = (state = initialState, action: UserAction): UserState => {
     switch (action.type) {
         case USER_LOGIN_REQUEST:
         case USER_REGISTER_REQUEST:

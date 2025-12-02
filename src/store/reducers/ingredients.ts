@@ -4,7 +4,13 @@ import {
     INGREDIENTS_LOAD_FAILED,
     INGREDIENTS_LOAD_REQUEST,
     INGREDIENTS_LOAD_SUCCESS
-} from "../actions/ingredients"
+} from "../actions/ingredients";
+
+type IngredientsAction = 
+    | { type: typeof INGREDIENTS_LOAD_REQUEST }
+    | { type: typeof INGREDIENTS_LOAD_SUCCESS; payload: { ingredients: TBurgerIngredient[] } }
+    | { type: typeof INGREDIENTS_LOAD_FAILED; payload: string }
+    | { type: typeof CLEAN_INGREDIENTS }
 
 interface IngredientsState {
     items: { ingredients: TBurgerIngredient[] }
@@ -18,7 +24,7 @@ const initialState: IngredientsState = {
     error: null,
 }
 
-export const ingredientsReducer = (state = initialState, action: any): IngredientsState => {
+export const ingredientsReducer = (state = initialState, action: IngredientsAction): IngredientsState => {
     switch (action.type) {
         case INGREDIENTS_LOAD_REQUEST:
             return {

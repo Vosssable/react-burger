@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { RootState } from '../index';
 import {
   login as loginApi,
   register as registerApi,
@@ -160,7 +161,7 @@ export const login = (data: LoginRequest) => {
           )
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       dispatch(loginFailed('Ошибка при авторизации'));
       throw error;
     }
@@ -182,7 +183,7 @@ export const register = (data: RegisterRequest) => {
           )
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       dispatch(registerFailed('Ошибка при регистрации'));
       throw error;
     }
@@ -190,7 +191,7 @@ export const register = (data: RegisterRequest) => {
 };
 
 export const logout = () => {
-  return async (dispatch: Dispatch, getState: any) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     try {
       dispatch(logoutRequest());
       const refreshToken = getRefreshToken();
@@ -200,7 +201,7 @@ export const logout = () => {
       removeRefreshToken();
       dispatch(logoutSuccess());
       dispatch(clearUser());
-    } catch (error: any) {
+    } catch (error: unknown) {
       dispatch(logoutFailed('Ошибка при выходе'));
       removeRefreshToken();
       dispatch(logoutSuccess());
@@ -210,7 +211,7 @@ export const logout = () => {
 };
 
 export const getUser = () => {
-  return async (dispatch: Dispatch, getState: any) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     try {
       dispatch(getUserRequest());
       const state = getState();
@@ -241,12 +242,18 @@ export const getUser = () => {
         }
       }
 
+      if (!accessToken) {
+        dispatch(getUserFailed('Требуется авторизация'));
+        return;
+      }
+
       const response = await getUserApi(accessToken);
       if (response.success) {
         dispatch(getUserSuccess(response.user, accessToken));
       }
-    } catch (error: any) {
-      if (error?.includes('403') || error?.includes('401')) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes('403') || errorMessage.includes('401')) {
         const refreshToken = getRefreshToken();
         if (refreshToken) {
           try {
@@ -281,7 +288,7 @@ export const getUser = () => {
 };
 
 export const updateUser = (data: UpdateUserRequest) => {
-  return async (dispatch: Dispatch, getState: any) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     try {
       dispatch(updateUserRequest());
       const state = getState();
@@ -296,7 +303,7 @@ export const updateUser = (data: UpdateUserRequest) => {
       if (response.success) {
         dispatch(updateUserSuccess(response.user));
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       dispatch(updateUserFailed('Ошибка при обновлении данных'));
       throw error;
     }
@@ -319,7 +326,7 @@ export const refreshToken = () => {
           refreshTokenSuccess(response.accessToken, response.refreshToken)
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       dispatch(refreshTokenFailed('Ошибка при обновлении токена'));
       removeRefreshToken();
       throw error;

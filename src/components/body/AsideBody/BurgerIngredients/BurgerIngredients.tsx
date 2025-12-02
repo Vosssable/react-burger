@@ -3,12 +3,11 @@ import {ingredientsTypes} from "../../../../helpers/lists/burgerLists"
 import styles from "./burgerIngredients.module.css"
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components"
 import BurgerIngredient from "../BurgerIngredient/BurgerIngredient"
-import {useSelector} from "react-redux";
-import {RootState} from "../../../../store";
+import {useAppSelector} from "../../../../store";
 
 function BurgerIngredients() {
     const [current, setCurrent] = React.useState('bun')
-    const {items, loading, error} = useSelector((state: RootState) => state.ingredients)
+    const {items, loading, error} = useAppSelector((state) => state.ingredients)
 
     const onTabClick = (changeTo: string) => {
         const listElement = document.getElementById(changeTo + '-section')
