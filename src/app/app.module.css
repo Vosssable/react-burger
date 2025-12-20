@@ -4,8 +4,8 @@ header {
 
 main {
     padding: 0 var(--usual-padding);
+    justify-items: center;
+    align-content: center;
     height: calc(100vh - var(--header-height));
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: calc(var(--offset-base-size) * 10);
 }

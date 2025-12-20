@@ -1,6 +1,5 @@
 import postOrders from "../../helpers/api/postOrders"
-import { Dispatch } from "redux"
-import { RootState } from "../index"
+import { AppDispatch, RootState } from "../index"
 
 export const LOAD_ORDER_SUCCESS = 'LOAD_ORDER_SUCCESS'
 export const LOAD_ORDER_FAILED = 'LOAD_ORDER_FAILED'
@@ -26,7 +25,7 @@ export const cleanOrder = () => ({
 })
 
 export const createOrder = (ingredientIds: string[], accessToken?: string | null) => {
-    return async (dispatch: Dispatch, getState: () => RootState) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             dispatch(loadOrderRequest())
             const state = getState()

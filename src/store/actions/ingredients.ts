@@ -1,6 +1,6 @@
 import type { TBurgerIngredient } from "../../helpers/types/burgerTypes"
 import getIngredients from "../../helpers/api/getIngredients"
-import {Dispatch} from "redux"
+import {AppDispatch} from "../index"
 
 export const INGREDIENTS_LOAD_REQUEST = 'INGREDIENTS_LOAD_REQUEST'
 export const INGREDIENTS_LOAD_SUCCESS = 'INGREDIENTS_LOAD_SUCCESS'
@@ -29,7 +29,7 @@ export const cleanIngredients = () => ({
 })
 
 export const fetchIngredients = () => {
-    return async (dispatch: Dispatch) => {
+    return async (dispatch: AppDispatch) => {
         try {
             dispatch(loadIngredients())
             const ingredientsResponse = await getIngredients()
