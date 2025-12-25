@@ -8,6 +8,7 @@ function checkResponse(res: Response) {
 }
 
 export async function customFetch(url: string, options: RequestInit) {
-    const res = await fetch(`${API_URL}${url}`, options)
+    const fullUrl = `${API_URL}${url}`;
+    const res = await fetch(fullUrl, options)
     return checkResponse(res)
 }
