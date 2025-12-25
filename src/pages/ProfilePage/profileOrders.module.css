@@ -1,0 +1,14 @@
+.container {
+    max-width: 860px;
+    width: 100%;
+    display: flex;
+    height: inherit;
+    padding: initial;
+}
+
+.orders_list {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 8px;
+}
+

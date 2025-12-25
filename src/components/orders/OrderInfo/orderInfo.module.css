@@ -1,0 +1,96 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 40vw;
+}
+
+.order_number {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.order_name {
+    margin-bottom: 12px;
+}
+
+.status {
+    margin-bottom: 60px;
+}
+
+.composition {
+    margin-bottom: 40px;
+}
+
+.ingredients_list {
+    max-height: 312px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-right: 24px;
+}
+
+.ingredient_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ingredient_image_container {
+    display: flex;
+    align-items: center;
+}
+
+.ingredient_image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    padding: 2px;
+    position: relative;
+}
+
+.ingredient_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #1C1C21;
+    padding: 2px;
+}
+
+.ingredient_price {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.status_done {
+    color: #00CCCC;
+}
+
+.status_pending {
+    color: #F2F2F3;
+}
+
+.status_created {
+    color: #F2F2F3;
+}
+
+.status_cancelled {
+    color: #E52E1A;
+}
+

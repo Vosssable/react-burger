@@ -1,5 +1,4 @@
-import { Dispatch } from 'redux';
-import { RootState } from '../index';
+import { AppDispatch, RootState } from '../index';
 import {
   login as loginApi,
   register as registerApi,
@@ -147,7 +146,7 @@ export const clearUser = () => ({
 });
 
 export const login = (data: LoginRequest) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       dispatch(loginRequest());
       const response = await loginApi(data);
@@ -169,7 +168,7 @@ export const login = (data: LoginRequest) => {
 };
 
 export const register = (data: RegisterRequest) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       dispatch(registerRequest());
       const response = await registerApi(data);
@@ -191,7 +190,7 @@ export const register = (data: RegisterRequest) => {
 };
 
 export const logout = () => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(logoutRequest());
       const refreshToken = getRefreshToken();
@@ -211,7 +210,7 @@ export const logout = () => {
 };
 
 export const getUser = () => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(getUserRequest());
       const state = getState();
@@ -288,7 +287,7 @@ export const getUser = () => {
 };
 
 export const updateUser = (data: UpdateUserRequest) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(updateUserRequest());
       const state = getState();
@@ -311,7 +310,7 @@ export const updateUser = (data: UpdateUserRequest) => {
 };
 
 export const refreshToken = () => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       dispatch(refreshTokenRequest());
       const refreshTokenValue = getRefreshToken();

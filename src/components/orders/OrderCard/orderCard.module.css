@@ -1,0 +1,108 @@
+.card {
+    background: #1C1C21;
+    border-radius: 40px;
+    padding: 24px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.card:hover {
+    opacity: 0.8;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: -16px;
+}
+
+.ingredient_image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    padding: 2px;
+    margin-left: -16px;
+    position: relative;
+}
+
+.ingredient_image:last-child {
+    margin-left: 0;
+}
+
+.ingredient_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #1C1C21;
+    padding: 2px;
+}
+
+.ingredient_count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more_count {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.status_done {
+    color: #00CCCC;
+}
+
+.status_pending {
+    color: #F2F2F3;
+}
+
+.status_created {
+    color: #F2F2F3;
+}
+
+.status_cancelled {
+    color: #E52E1A;
+}
+
