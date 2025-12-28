@@ -37,6 +37,9 @@
     "deploy": "gh-pages -d build",
     "test:watch": "react-scripts test",
     "test:ci": "react-scripts test --watchAll=false --coverage",
+    "cypress:open": "cypress open",
+    "cypress:run:direct": "cypress run",
+    "cypress:run": "start-server-and-test start http://localhost:3000 cypress:run:direct",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -58,6 +61,8 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.3.0"
+    "cypress": "^13.7.3",
+    "gh-pages": "^6.3.0",
+    "start-server-and-test": "^2.0.3"
   }
 }

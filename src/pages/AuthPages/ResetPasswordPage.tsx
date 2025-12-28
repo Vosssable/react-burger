@@ -19,7 +19,7 @@ function ResetPasswordPage() {
     if (!resetPasswordAllowed) {
       navigate("/forgot-password")
     }
-  }, [navigate])
+  }, [navigate, location.state?.from])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()

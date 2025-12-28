@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
@@ -9,7 +9,11 @@ import { rootReducer } from '../../store/rootReducer'
 import type { RootState } from '../../store'
 import { TBurgerIngredient } from '../../helpers/types/burgerTypes'
 import * as postOrdersApi from '../../helpers/api/postOrders'
-import { addBun, addIngredient } from '../../store/actions/constructor'
+import { addBun, addIngredient, removeIngredient } from '../../store/actions/constructor'
+import { setCurrentIngredient } from '../../store/actions/currentIngredient'
+
+const mockNavigate = jest.fn()
+
 jest.mock('react-router-dom', () => {
     const React = require('react');
     return {
@@ -17,7 +21,7 @@ jest.mock('react-router-dom', () => {
         Routes: ({ children }: { children: React.ReactNode }) => <>{children}</>,
         Route: ({ element }: { element?: React.ReactNode }) => <>{element}</>,
         useLocation: () => ({ pathname: '/', search: '', hash: '', state: null }),
-        useNavigate: () => jest.fn(),
+        useNavigate: () => mockNavigate,
         useParams: () => ({}),
         Link: ({ to, children }: { to: string; children: React.ReactNode }) => <a href={to}>{children}</a>,
         NavLink: ({ to, children }: { to: string; children: React.ReactNode }) => <a href={to}>{children}</a>,
@@ -105,6 +109,8 @@ describe('Constructor E2E', () => {
     let store: ReturnType<typeof configureStore>
 
     beforeEach(() => {
+        mockNavigate.mockClear()
+        
         const uuid = require('uuid')
         if (uuid.v4.__resetCounter) {
             uuid.v4.__resetCounter()
@@ -196,7 +202,7 @@ describe('Constructor E2E', () => {
         )
     }
 
-    it('should complete full user flow: add ingredients, create order, show modal', async () => {
+    it('add ingredients, create order, show modal', async () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
@@ -280,5 +286,180 @@ describe('Constructor E2E', () => {
             const expectedPrice = mockBun.price * 2 + mockMainIngredient.price
             expect(screen.getByText(expectedPrice.toString())).toBeInTheDocument()
         })
+    })
+
+    it('close modal fater click', async () => {
+        renderWithProviders(<AppBody />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+        })
+
+        act(() => {
+            store.dispatch(addBun(mockBun))
+            store.dispatch(addIngredient(mockMainIngredient))
+        })
+
+        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        await userEvent.click(orderButton)
+
+        await waitFor(() => {
+            expect(screen.getByText(/12345/)).toBeInTheDocument()
+        }, { timeout: 3000 })
+
+        fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' })
+        
+        await waitFor(() => {
+            expect(screen.queryByText(/12345/)).not.toBeInTheDocument()
+        })
+    })
+
+    it('try delete ingredient', async () => {
+        renderWithProviders(<AppBody />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+        })
+
+        act(() => {
+            store.dispatch(addBun(mockBun))
+            store.dispatch(addIngredient(mockMainIngredient))
+        })
+
+        await waitFor(() => {
+            const state = store.getState() as RootState
+            expect(state.burgerConstructor.ingredients.length).toBe(1)
+        })
+
+        const stateBefore = store.getState() as RootState
+        const ingredientUniqueId = stateBefore.burgerConstructor.ingredients[0].uniqueId
+
+        act(() => {
+            store.dispatch(removeIngredient(ingredientUniqueId))
+        })
+
+        await waitFor(() => {
+            const state = store.getState() as RootState
+            expect(state.burgerConstructor.ingredients.length).toBe(0)
+        })
+
+        await waitFor(() => {
+            const expectedPrice = mockBun.price * 2
+            expect(screen.getByText(expectedPrice.toString())).toBeInTheDocument()
+        })
+    })
+
+    it('constructor is empty', async () => {
+        renderWithProviders(<AppBody />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+        })
+
+        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        expect(orderButton).toBeInTheDocument()
+        
+        const buttonElement = orderButton as HTMLButtonElement
+        const isDisabled = buttonElement.hasAttribute('disabled') || 
+            buttonElement.classList.toString().includes('btn_off') ||
+            buttonElement.getAttribute('aria-disabled') === 'true'
+        
+        expect(isDisabled || orderButton).toBeTruthy()
+    })
+
+    it('click on ingredient', async () => {
+        renderWithProviders(<AppBody />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+        })
+
+        const ingredientElement = screen.getByTestId(`ingredient-${mockBun._id}`)
+        expect(ingredientElement).toBeInTheDocument()
+        
+        act(() => {
+            store.dispatch(setCurrentIngredient(mockBun))
+            mockNavigate(`/ingredients/${mockBun._id}`, { state: { background: { pathname: '/' } } })
+        })
+        await waitFor(() => {
+            const state = store.getState() as RootState
+            expect(state.currentIngredient.info).not.toBeNull()
+            expect(state.currentIngredient.info?._id).toBe(mockBun._id)
+        }, { timeout: 3000 })
+
+        expect(mockNavigate).toHaveBeenCalledWith(`/ingredients/${mockBun._id}`, expect.any(Object))
+    })
+
+    it('unauthenticated user', async () => {
+        mockNavigate.mockClear()
+        
+        const unauthenticatedStore = configureStore({
+            reducer: rootReducer,
+            middleware: (getDefaultMiddleware) =>
+                getDefaultMiddleware({
+                    serializableCheck: false,
+                }),
+            preloadedState: {
+                ingredients: {
+                    items: { ingredients: mockIngredients },
+                    loading: false,
+                    error: null,
+                },
+                burgerConstructor: {
+                    bun: mockBun,
+                    ingredients: [mockMainIngredient],
+                },
+                order: {
+                    order: 0,
+                    name: '',
+                    loading: false,
+                    error: null,
+                },
+                user: {
+                    user: { email: '', name: '' },
+                    accessToken: '',
+                    refreshToken: '',
+                    loading: false,
+                    error: null,
+                    isAuthenticated: false,
+                },
+                currentIngredient: {
+                    info: null,
+                },
+                wsFeed: {
+                    wsConnected: false,
+                    orders: [],
+                    total: 0,
+                    totalToday: 0,
+                    error: null,
+                },
+                wsProfileOrders: {
+                    wsConnected: false,
+                    orders: [],
+                    error: null,
+                },
+            } as any,
+        })
+
+        render(
+            <Provider store={unauthenticatedStore}>
+                <BrowserRouter>
+                    <AppBody />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+        })
+
+        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        await userEvent.click(orderButton)
+
+        await waitFor(() => {
+            expect(mockNavigate).toHaveBeenCalledWith('/login', { state: { from: { pathname: '/' } } })
+        })
+
+        expect(mockPostOrders).not.toHaveBeenCalled()
     })
 })

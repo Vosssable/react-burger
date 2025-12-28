@@ -40,7 +40,7 @@ function BurgerIngredient(props: { info: TBurgerIngredient }) {
     }
 
     return (
-        <div className={'mt-6 ' + (isDrag ? styles.block_dragged : styles.block)} onClick={openModal} ref={dragRef}>
+        <div data-testid={`ingredient-${props.info._id}`} className={'mt-6 ' + (isDrag ? styles.block_dragged : styles.block)} onClick={openModal} ref={dragRef}>
             <div className={styles.item}>
                 {count > 0 ? (<Counter count={count} size="default" extraClass="m-1"/>) : ''}
                 <img src={props.info.image} className='ml-4 mr-4' alt={'Фото ' + props.info.name}/>

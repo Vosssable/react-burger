@@ -1,5 +1,3 @@
-import { IWSMessage } from '../middleware/socketMiddleware'
-
 export type JSONSerializable = string | number | boolean | null | JSONSerializable[] | { [key: string]: JSONSerializable }
 
 export const WS_CONNECTION_START = 'WS_CONNECTION_START'

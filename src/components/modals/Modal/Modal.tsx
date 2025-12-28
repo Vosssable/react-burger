@@ -36,7 +36,7 @@ const Modal = (props: { isOpen: boolean, onClose: () => void, title: string | nu
                             {title}
                         </p>
                     ) : undefined}
-                    {showClose && <CloseIcon type='primary' className={styles.close} onClick={onClose}/>}
+                    {showClose && <CloseIcon data-testid="modal-close" type='primary' className={styles.close} onClick={onClose}/>}
                 </div>
                 {children}
             </div>
