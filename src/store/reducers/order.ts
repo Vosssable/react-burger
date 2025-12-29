@@ -13,7 +13,7 @@ interface OrderState {
     error: null | string,
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
     order: 0,
     name: '',
     loading: false,

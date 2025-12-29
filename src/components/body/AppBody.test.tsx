@@ -11,6 +11,14 @@ import { TBurgerIngredient } from '../../helpers/types/burgerTypes'
 import * as postOrdersApi from '../../helpers/api/postOrders'
 import { addBun, addIngredient, removeIngredient } from '../../store/actions/constructor'
 import { setCurrentIngredient } from '../../store/actions/currentIngredient'
+import { initialState as ingredientsInitialState } from '../../store/reducers/ingredients'
+import { initialState as constructorInitialState } from '../../store/reducers/constructor'
+import { initialState as orderInitialState } from '../../store/reducers/order'
+import { initialState as userInitialState } from '../../store/reducers/user'
+import { initialState as currentIngredientInitialState } from '../../store/reducers/currentIngredient'
+import { initialState as wsFeedInitialState } from '../../store/reducers/wsFeedReducer'
+import { initialState as wsProfileOrdersInitialState } from '../../store/reducers/wsProfileOrdersReducer'
+import orderResponse from '../../__fixtures__/orderResponse.json'
 
 const mockNavigate = jest.fn()
 
@@ -105,6 +113,14 @@ const mockMainIngredient: TBurgerIngredient = {
 
 const mockIngredients: TBurgerIngredient[] = [mockBun, mockMainIngredient]
 
+const SELECTOR_BUN_NAME = 'Краторная булка N-200i'
+const SELECTOR_ORDER_BUTTON = /оформить заказ/i
+const SELECTOR_ORDER_ID = /12345/
+const SELECTOR_ORDER_IDENTIFIER = /идентификатор заказа/i
+const SELECTOR_ORDER_COOKING = /Ваш заказ начали готовить/i
+const SELECTOR_ORDER_WAIT = /Дождитесь его на орбитальной станции/i
+const TEST_ID_INGREDIENT = (id: string) => `ingredient-${id}`
+
 describe('Constructor E2E', () => {
     let store: ReturnType<typeof configureStore>
 
@@ -128,53 +144,35 @@ describe('Constructor E2E', () => {
                 }),
             preloadedState: {
                 ingredients: {
+                    ...ingredientsInitialState,
                     items: { ingredients: mockIngredients },
-                    loading: false,
-                    error: null,
                 },
                 burgerConstructor: {
-                    bun: null,
-                    ingredients: [],
+                    ...constructorInitialState,
                 },
                 order: {
-                    order: 0,
-                    name: '',
-                    loading: false,
-                    error: null,
+                    ...orderInitialState,
                 },
                 user: {
+                    ...userInitialState,
                     user: { email: 'test@test.com', name: 'Test User' },
                     accessToken: 'Bearer test-token',
                     refreshToken: 'refresh-token',
-                    loading: false,
-                    error: null,
                     isAuthenticated: true,
                 },
                 currentIngredient: {
-                    info: null,
+                    ...currentIngredientInitialState,
                 },
                 wsFeed: {
-                    wsConnected: false,
-                    orders: [],
-                    total: 0,
-                    totalToday: 0,
-                    error: null,
+                    ...wsFeedInitialState,
                 },
                 wsProfileOrders: {
-                    wsConnected: false,
-                    orders: [],
-                    error: null,
+                    ...wsProfileOrdersInitialState,
                 },
             } as any,
         })
 
-        mockPostOrders.mockResolvedValue({
-            success: true,
-            name: 'Space флюоресцентный антарианский люминесцентный бургер',
-            order: {
-                number: 12345,
-            },
-        })
+        mockPostOrders.mockResolvedValue(orderResponse)
 
         global.fetch = jest.fn(() =>
             Promise.resolve({
@@ -206,7 +204,7 @@ describe('Constructor E2E', () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
         act(() => {
@@ -232,7 +230,7 @@ describe('Constructor E2E', () => {
             expect(screen.getByText(expectedPrice.toString())).toBeInTheDocument()
         })
 
-        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        const orderButton = screen.getByRole('button', { name: SELECTOR_ORDER_BUTTON })
         expect(orderButton).toBeInTheDocument()
         expect(orderButton).not.toBeDisabled()
 
@@ -249,24 +247,24 @@ describe('Constructor E2E', () => {
 
         await waitFor(() => {
             const state = store.getState() as RootState
-            expect(state.order.order).toBe(12345)
-            expect(state.order.name).toBe('Space флюоресцентный антарианский люминесцентный бургер')
+            expect(state.order.order).toBe(orderResponse.order.number)
+            expect(state.order.name).toBe(orderResponse.name)
         }, { timeout: 3000 })
 
         await waitFor(() => {
-            expect(screen.getByText(/12345/)).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_ORDER_ID)).toBeInTheDocument()
         }, { timeout: 3000 })
 
-        expect(screen.getByText(/идентификатор заказа/i)).toBeInTheDocument()
-        expect(screen.getByText(/Ваш заказ начали готовить/i)).toBeInTheDocument()
-        expect(screen.getByText(/Дождитесь его на орбитальной станции/i)).toBeInTheDocument()
+        expect(screen.getByText(SELECTOR_ORDER_IDENTIFIER)).toBeInTheDocument()
+        expect(screen.getByText(SELECTOR_ORDER_COOKING)).toBeInTheDocument()
+        expect(screen.getByText(SELECTOR_ORDER_WAIT)).toBeInTheDocument()
     })
 
     it('should update price when ingredients are added', async () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
         act(() => {
@@ -292,7 +290,7 @@ describe('Constructor E2E', () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
         act(() => {
@@ -300,17 +298,17 @@ describe('Constructor E2E', () => {
             store.dispatch(addIngredient(mockMainIngredient))
         })
 
-        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        const orderButton = screen.getByRole('button', { name: SELECTOR_ORDER_BUTTON })
         await userEvent.click(orderButton)
 
         await waitFor(() => {
-            expect(screen.getByText(/12345/)).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_ORDER_ID)).toBeInTheDocument()
         }, { timeout: 3000 })
 
         fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' })
         
         await waitFor(() => {
-            expect(screen.queryByText(/12345/)).not.toBeInTheDocument()
+            expect(screen.queryByText(SELECTOR_ORDER_ID)).not.toBeInTheDocument()
         })
     })
 
@@ -318,7 +316,7 @@ describe('Constructor E2E', () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
         act(() => {
@@ -353,10 +351,10 @@ describe('Constructor E2E', () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
-        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        const orderButton = screen.getByRole('button', { name: SELECTOR_ORDER_BUTTON })
         expect(orderButton).toBeInTheDocument()
         
         const buttonElement = orderButton as HTMLButtonElement
@@ -371,10 +369,10 @@ describe('Constructor E2E', () => {
         renderWithProviders(<AppBody />)
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
-        const ingredientElement = screen.getByTestId(`ingredient-${mockBun._id}`)
+        const ingredientElement = screen.getByTestId(TEST_ID_INGREDIENT(mockBun._id))
         expect(ingredientElement).toBeInTheDocument()
         
         act(() => {
@@ -401,42 +399,28 @@ describe('Constructor E2E', () => {
                 }),
             preloadedState: {
                 ingredients: {
+                    ...ingredientsInitialState,
                     items: { ingredients: mockIngredients },
-                    loading: false,
-                    error: null,
                 },
                 burgerConstructor: {
+                    ...constructorInitialState,
                     bun: mockBun,
                     ingredients: [mockMainIngredient],
                 },
                 order: {
-                    order: 0,
-                    name: '',
-                    loading: false,
-                    error: null,
+                    ...orderInitialState,
                 },
                 user: {
-                    user: { email: '', name: '' },
-                    accessToken: '',
-                    refreshToken: '',
-                    loading: false,
-                    error: null,
-                    isAuthenticated: false,
+                    ...userInitialState,
                 },
                 currentIngredient: {
-                    info: null,
+                    ...currentIngredientInitialState,
                 },
                 wsFeed: {
-                    wsConnected: false,
-                    orders: [],
-                    total: 0,
-                    totalToday: 0,
-                    error: null,
+                    ...wsFeedInitialState,
                 },
                 wsProfileOrders: {
-                    wsConnected: false,
-                    orders: [],
-                    error: null,
+                    ...wsProfileOrdersInitialState,
                 },
             } as any,
         })
@@ -450,10 +434,10 @@ describe('Constructor E2E', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Краторная булка N-200i')).toBeInTheDocument()
+            expect(screen.getByText(SELECTOR_BUN_NAME)).toBeInTheDocument()
         })
 
-        const orderButton = screen.getByRole('button', { name: /оформить заказ/i })
+        const orderButton = screen.getByRole('button', { name: SELECTOR_ORDER_BUTTON })
         await userEvent.click(orderButton)
 
         await waitFor(() => {

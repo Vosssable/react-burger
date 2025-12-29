@@ -7,7 +7,7 @@ interface WSProfileOrdersState {
     error: string | null
 }
 
-const initialState: WSProfileOrdersState = {
+export const initialState: WSProfileOrdersState = {
     wsConnected: false,
     orders: [],
     error: null
