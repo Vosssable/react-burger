@@ -1,4 +1,4 @@
-import { userReducer } from './user'
+import { userReducer, initialState } from './user'
 
 type UserState = ReturnType<typeof userReducer>
 import {
@@ -24,15 +24,6 @@ import {
 } from '../actions/user'
 
 describe('user reducer', () => {
-    const initialState: UserState = {
-        user: null,
-        accessToken: null,
-        refreshToken: null,
-        loading: false,
-        error: null,
-        isAuthenticated: false,
-    }
-
     const mockUser = {
         email: 'test@example.com',
         name: 'Test User',

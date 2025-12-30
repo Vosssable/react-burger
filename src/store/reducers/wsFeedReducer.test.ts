@@ -1,4 +1,4 @@
-import { wsFeedReducer } from './wsFeedReducer'
+import { wsFeedReducer, initialState } from './wsFeedReducer'
 
 type WSFeedState = ReturnType<typeof wsFeedReducer>
 import {
@@ -10,14 +10,6 @@ import {
 import { IOrder } from '../middleware/socketMiddleware'
 
 describe('wsFeed reducer', () => {
-    const initialState: WSFeedState = {
-        wsConnected: false,
-        orders: [],
-        total: 0,
-        totalToday: 0,
-        error: null,
-    }
-
     const mockOrder: IOrder = {
         _id: '643d69a5c3f7b9001cfa093c',
         ingredients: ['643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0943'],

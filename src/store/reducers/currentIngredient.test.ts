@@ -1,4 +1,4 @@
-import { currentIngredientReducer } from './currentIngredient'
+import { currentIngredientReducer, initialState } from './currentIngredient'
 
 type CurrentIngredientState = ReturnType<typeof currentIngredientReducer>
 import {
@@ -8,10 +8,6 @@ import {
 import { TBurgerIngredient } from '../../helpers/types/burgerTypes'
 
 describe('currentIngredient reducer', () => {
-    const initialState: CurrentIngredientState = {
-        info: null,
-    }
-
     const mockIngredient: TBurgerIngredient = {
         _id: '643d69a5c3f7b9001cfa093c',
         name: 'Краторная булка N-200i',

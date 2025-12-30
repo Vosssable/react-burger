@@ -1,4 +1,4 @@
-import { wsProfileOrdersReducer } from './wsProfileOrdersReducer'
+import { wsProfileOrdersReducer, initialState } from './wsProfileOrdersReducer'
 
 type WSProfileOrdersState = ReturnType<typeof wsProfileOrdersReducer>
 import {
@@ -10,12 +10,6 @@ import {
 import { IOrder } from '../middleware/socketMiddleware'
 
 describe('wsProfileOrders reducer', () => {
-    const initialState: WSProfileOrdersState = {
-        wsConnected: false,
-        orders: [],
-        error: null,
-    }
-
     const mockOrder: IOrder = {
         _id: '643d69a5c3f7b9001cfa093c',
         ingredients: ['643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0943'],

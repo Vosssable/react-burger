@@ -1,4 +1,4 @@
-import { orderReducer } from './order'
+import { orderReducer, initialState } from './order'
 
 type OrderState = ReturnType<typeof orderReducer>
 import {
@@ -9,13 +9,6 @@ import {
 } from '../actions/order'
 
 describe('order reducer', () => {
-    const initialState: OrderState = {
-        order: 0,
-        name: '',
-        loading: false,
-        error: null,
-    }
-
     it('should return the initial state', () => {
         expect(orderReducer(undefined, { type: 'UNKNOWN_ACTION' } as any)).toEqual(initialState)
     })

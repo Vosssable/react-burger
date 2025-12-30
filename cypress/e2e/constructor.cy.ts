@@ -33,7 +33,9 @@ describe('Constructor Page - Full User Flow', () => {
     cy.dragAndDrop(SELECTOR_BUN_INGREDIENT, SELECTOR_DROP_TARGET)
     cy.dragAndDrop(SELECTOR_MAIN_INGREDIENT, SELECTOR_DROP_TARGET)
 
-    cy.contains('Биокотлета из марсианской Магнолии').should('be.visible')
+    cy.contains('Биокотлета из марсианской Магнолии')
+      .scrollIntoView()
+      .should('be.visible')
   })
 
   it('should calculate total price', () => {

@@ -2,7 +2,7 @@ jest.mock('uuid', () => ({
     v4: jest.fn(() => 'mock-uuid-v4'),
 }))
 
-import { constructorReducer, TConstructorIngredient } from './constructor'
+import { constructorReducer, TConstructorIngredient, initialState } from './constructor'
 
 type ConstructorState = ReturnType<typeof constructorReducer>
 import {
@@ -15,11 +15,6 @@ import {
 import { TBurgerIngredient } from '../../helpers/types/burgerTypes'
 
 describe('constructor reducer', () => {
-    const initialState: ConstructorState = {
-        bun: null,
-        ingredients: [],
-    }
-
     const mockBun: TBurgerIngredient = {
         _id: '643d69a5c3f7b9001cfa093c',
         name: 'Краторная булка N-200i',
