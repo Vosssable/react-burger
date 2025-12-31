@@ -12,7 +12,7 @@ interface CurrentIngredientState {
     info: TBurgerIngredient | null
 }
 
-const initialState: CurrentIngredientState = {
+export const initialState: CurrentIngredientState = {
     info: null,
 }
 

@@ -2,6 +2,7 @@
   "name": "react-burger",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://vosssable.github.io/react-burger",
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.1",
     "@testing-library/dom": "^10.4.1",
@@ -20,7 +21,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.2.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.9.6",
+    "react-router-dom": "^6.30.2",
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
@@ -32,6 +33,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test:watch": "react-scripts test",
+    "test:ci": "react-scripts test --watchAll=false --coverage",
+    "cypress:open": "cypress open",
+    "cypress:run:direct": "cypress run",
+    "cypress:run": "start-server-and-test start http://localhost:3000 cypress:run:direct",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -51,5 +59,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^13.7.3",
+    "gh-pages": "^6.3.0",
+    "start-server-and-test": "^2.0.3"
   }
 }

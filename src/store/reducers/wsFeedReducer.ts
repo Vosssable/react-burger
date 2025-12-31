@@ -9,7 +9,7 @@ interface WSFeedState {
     error: string | null
 }
 
-const initialState: WSFeedState = {
+export const initialState: WSFeedState = {
     wsConnected: false,
     orders: [],
     total: 0,

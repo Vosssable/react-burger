@@ -33,7 +33,7 @@ interface UserState {
     isAuthenticated: boolean;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
     user: null,
     accessToken: null,
     refreshToken: null,

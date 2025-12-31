@@ -71,7 +71,7 @@ function BurgerConstructor() {
     return (
         <section className={'pt-25 ' + styles.main}>
             <div className={styles.main_container}>
-                <div ref={dropRef}
+                <div data-testid="constructor-drop-target" ref={dropRef}
                      className={ingredientIds.length !== 0 ? styles.main_container_list : styles.main_container_empty}>
                     <ConstructorList/>
                 </div>
